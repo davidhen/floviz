@@ -125,6 +125,40 @@ plot_2
 ![](floviz_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
-ggsave(here("plot_1.png"), plot_1, width = 12, height = 9, dpi = 300)
-ggsave(here("plot_2.png"), plot_2, width = 12, height = 9, dpi = 300)
+my_night %>% 
+  group_by(regime, cause) %>% 
+  summarise(tot_death = sum(n)) %>% 
+  ggplot(aes(cause, tot_death, fill = regime)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = colours_davidhen) +
+  scale_y_continuous(limits = c(0, 12000)) +
+  theme(legend.position = "top") +
+  labs(title = "Deaths of British soldiers in the Crimean War by cause ",
+       subtitle = "In the 12 months before and after sanitation improvements",
+       caption = "Original Data by F. Nightingale Source: {HistData} CRAN package | Plot by @_davidhen",
+       x = "",
+       y = "Deaths", 
+       fill = "") -> plot_3
+plot_3
 ```
+
+![](floviz_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
+my_night  %>% 
+  ggplot(aes(n, fill = cause)) +
+  geom_boxplot() +
+  facet_wrap(~regime) +
+  coord_flip() +
+  scale_fill_manual(values = colours_davidhen) +
+  theme(legend.position = "top",
+        axis.text.x = element_blank()) +
+  labs(title = "A New Plot of 'Diagram of the Causes of Mortality in the Army in the East' by Florence Nightingale",
+       subtitle = "Distribution of monthly deaths of British soldiers in the Crimean War by cause",
+       caption = "Original Data by F. Nightingale Source: {HistData} CRAN package | Plot by @_davidhen",
+       y = "",
+       x = "Deaths", 
+       fill = "")
+```
+
+![](floviz_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
